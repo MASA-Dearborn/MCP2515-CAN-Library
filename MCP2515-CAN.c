@@ -1,6 +1,6 @@
 /*
  * File:   MCP2515-CAN.c
- * Author: zaner
+ * Author: Lucas Ringe
  *
  * Created on February 27, 2020, 2:21 PM
  */
@@ -18,37 +18,45 @@
  * BIT MODIFY       = $05
  */
 
-#define MAX_FRAME_LENGTH 10
+#include "MCP2515-CAN.h"
+#include <stdlib.h>
+#define MAX_FRAME_LENGTH 8
 
-void writeData(char address, char* dataBuffer, char dataSize) 
+/*
+ *  Purpose: To transmit a buffer of up to 8-Bytes to the MCP2515 at a specified register address 
+ *  Inputs:  The address for a register in MCP2515, a pointer to a dataBuffer, and the length of the data buffer
+ */
+void writeDataBuffer(uint8_t address, uint8_t* dataBuffer, uint8_t dataSize) 
 {
 
-    char dataToSend[MAX_FRAME_LENGTH]; 
+    uint8_t dLength = dataSize + 2;
+    uint8_t *dataToSend = malloc((dLength) * sizeof(uint8_t));
     
     dataToSend[0] = 0x02;
     dataToSend[1] = address;
     
-    for(char i = 2; i < dataSize + 2; i++) 
+    for(uint8_t i = 2; i < dLength; i++) 
     {
         dataToSend[i] = dataBuffer[i-2];
     }
     
-    SPI1_Exchange8bitBuffer(dataToSend, dataSize + 2, 0);
+    SPI1_Exchange8bitBuffer(dataToSend, dLength, 0);
+    free(dataToSend);
     
 }
 
-void readData(char address, char* dataBuffer, char dataSize)
+void readData(uint8_t address, uint8_t* dataBuffer, uint8_t dataSize)
 {
     
-    char dataRead[MAX_FRAME_LENGTH];
-    char dataOut[MAX_FRAME_LENGTH];
+    uint8_t dataRead[MAX_FRAME_LENGTH];
+    uint8_t dataOut[MAX_FRAME_LENGTH];
     
     dataOut[0] = 0x03;
     dataOut[1] = address;
     
     SPI1_Exchange8bitBuffer(dataOut, dataSize + 2, dataRead);
     
-    for(int i = 0; i < dataSize; i++) 
+    for(uint8_t i = 0; i < dataSize; i++) 
     {
         dataBuffer[i] = dataRead[i];
     }

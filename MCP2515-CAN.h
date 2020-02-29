@@ -25,17 +25,49 @@
 #define	XC_HEADER_TEMPLATE_H
 
 #include <xc.h> // include processor files - each processor file is guarded. 
-#include <spi1.h>
+#include "../mcc_generated_files/spi1.h"
 
 enum registers
 {
     
+    // Transmit & Receive Data Start Registers
     TXB0D0  = 0x36,
     TXB1D0  = 0x46,
     TXB2D0  = 0x56,
     RXB0D0  = 0x66,
     RXB1D0  = 0x76,
-    CANCTRL = 0x0F
+    
+   // Can Control Registers 
+    CANCTRL = 0x0F,
+    RXF0SIDH = 0x00,
+    RXF0SIDL = 0x01,
+    RXF1SIDH = 0x04,
+    RXF1SIDL = 0x05,
+    RXF2SIDH = 0x08,
+    RXF2SIDL = 0x09,
+    RXF3SIDH = 0x10,
+    RXF3SIDL = 0x11,
+    RXF4SIDH = 0x14,
+    RXF4SIDL = 0x15,
+    
+    // Data Length Registers
+    TXB0DLC = 0x35,
+    TXB1DLC = 0x45,
+    TXB2DLC = 0x55,
+    RXB0DLC = 0x65,
+    RXB1DLC = 0x75,
+    
+    // ID Registers
+    RXB0SIDH = 0x61,
+    RXB0SIDL = 0x60,
+    RXB1SIDH = 0x71,
+    RXB1SIDL = 0x70,
+    TXB0SIDH = 0x31,
+    TXB0SIDL = 0x30,
+    TXB1SIDH = 0x41,
+    TXB1SIDL = 0x40,
+    TXB2SIDH = 0x51,
+    TXB2SIDL = 0x50
     
 };
 
